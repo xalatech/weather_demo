@@ -12,7 +12,6 @@ interface SearchProps {
 const Search: FC<SearchProps> = ({ title, subtitle }) => {
   const dispatch = useDispatch();
   const [city, setCity] = useState('');
-  const [loaded, setLoaded] = useState(false);
   const [unit, setUnit] = useState(Unit.metric);
 
   // Make sure city input is always focussed

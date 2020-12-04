@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Unit, WeatherData, WeatherDataResult } from '../store/types';
 import '../styles/weather.css';
 import moment from 'moment';
@@ -19,7 +19,7 @@ const measurement = (unit: Unit) => {
 
 const Weather: FC<WeatherProps> = ({ data }) => {
   const weatherData: WeatherData = data.data.getCityByName;
-  const today = new Date;
+  const today = new Date();
 
   // Destructure weather details from WeatherData
   const { weather } = weatherData;
