@@ -3,6 +3,8 @@ import weatherQuery from './query';
 
 const endpoint = 'https://graphql-weather-api.herokuapp.com/'
 
+// TODO: this can be implemented for separation of concern
+
 const weatherForecast = async (cityName: string) => {
     const query = weatherQuery(cityName, Unit.metric);
 

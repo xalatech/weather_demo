@@ -1,5 +1,4 @@
-import { setegid } from 'process';
-import { FC, useState, FormEvent, ChangeEvent } from 'react';
+import { FC, useState, FormEvent, ChangeEvent, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { getWeather, setError, setLoading } from '../store/actions/weatherActions';
@@ -13,16 +12,43 @@ interface SearchProps {
 const Search: FC<SearchProps> = ({ title, subtitle }) => {
   const dispatch = useDispatch();
   const [city, setCity] = useState('');
+  const [loaded, setLoaded] = useState(false);
   const [unit, setUnit] = useState(Unit.metric);
 
+  // Make sure city input is always focussed
+  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+
+  useEffect(() => {
+    inputRef.current.focus();
+  });
 
   const changeCityHandler = (e: FormEvent<HTMLInputElement>) => {
     setCity(e.currentTarget.value);
   }
 
   const changeUnitHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    // set the unit field
     setUnit(parseInt(e.target.value));
+
+    if(city) {
+      dispatchWeatherActions();
+    }
   };
+
+  const resetSearchForm = () => {
+    setCity('');
+    setUnit(0);
+
+    inputRef.current.focus();
+  }
+
+  const dispatchWeatherActions = () => {
+    // dispatch actions
+    dispatch(setError(''))
+    dispatch(setLoading());
+    dispatch(getWeather(city, unit));
+  }
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,14 +57,7 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
       return dispatch(setError('City is required!'));
     }
 
-    // dispatch actions
-    dispatch(setError(''))
-    dispatch(setLoading());
-    dispatch(getWeather(city, unit));
-
-    // Reset the Search form
-    setCity('');
-    setUnit(Unit.metric);
+    dispatchWeatherActions();
   }
 
   return (
@@ -50,15 +69,18 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
             <div className="form-row">
               <div className="form-group col-md-6">
                 <label htmlFor="city">City name</label>
-                <input type="text"
-                  className="form-control" id="city"
+                <input
+                  type="text"
+                  ref={inputRef}
+                  className="form-control" 
+                  id="city"
                   placeholder="e.g. Paris, Oslo, London"
                   value={city}
                   onChange={changeCityHandler} />
               </div>
               <div className="form-group col-md-4">
                 <label htmlFor="unit">Choose unit</label>
-                <select id="unit" onChange={changeUnitHandler} className="form-control">
+                <select id="unit" onChange={changeUnitHandler} value={unit} className="form-control">
                   {Object.keys(Unit).map((key, i) => (
                     <option key={key} value={key}>
                       {Unit[i]}
@@ -68,7 +90,8 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary col-md-3 mt-2 mb-0">Search</button>
+            <button type="submit" className="btn btn-primary col-md-2 mt-2 mb-0">Search</button>
+            <button type="button" onClick={resetSearchForm} className="btn btn-secondary col-md-2 mt-2 ml-3 mb-0">Reset Form</button>
           </form>
         </div>
       </div>

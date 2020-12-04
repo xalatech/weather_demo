@@ -29,7 +29,7 @@ const Weather: FC<WeatherProps> = ({ data }) => {
   const { clouds } = weather;
 
   return (
-    <div className="weather__container card">
+    <div hidden={!weatherData} className="weather__container card">
       <div className="card-body">
         <div className="d-flex">
           <div className="weather__summary__container">
