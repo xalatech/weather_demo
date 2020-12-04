@@ -15,7 +15,8 @@ To fetch data from graphql endpoint you can use https://github.com/prisma-labs/g
 
 You can get details for a city with a query like this:
    
-# Write your query or mutation here {
+Write your query or mutation here: 
+{
 getCityByName(name:"Oradea", config:{units:metric}) { country
 weather {
 temperature { actual feelsLike min
@@ -31,4 +32,4 @@ humidity }
 } }
 }
 
-Estimate time:​ 4 hours
+# Estimate time:​ 4 hours
