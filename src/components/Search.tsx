@@ -1,8 +1,8 @@
-import React, { FC, useState, FormEvent, ChangeEvent } from 'react';
+import { setegid } from 'process';
+import { FC, useState, FormEvent, ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { setAlert } from '../store/actions/alertActions';
-import { getWeather, setLoading } from '../store/actions/weatherActions';
+import { getWeather, setError, setLoading } from '../store/actions/weatherActions';
 import { Unit } from '../store/types';
 
 interface SearchProps {
@@ -28,10 +28,11 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
     e.preventDefault();
 
     if (city.trim() === '') {
-      return dispatch(setAlert('City is required!'));
+      return dispatch(setError('City is required!'));
     }
 
     // dispatch actions
+    dispatch(setError(''))
     dispatch(setLoading());
     dispatch(getWeather(city, unit));
 
@@ -51,12 +52,12 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
                 <label htmlFor="city">City name</label>
                 <input type="text"
                   className="form-control" id="city"
-                  placeholder="Enter city name"
+                  placeholder="e.g. Paris, Oslo, London"
                   value={city}
                   onChange={changeCityHandler} />
               </div>
               <div className="form-group col-md-4">
-                <label htmlFor="unit">Unit</label>
+                <label htmlFor="unit">Choose unit</label>
                 <select id="unit" onChange={changeUnitHandler} className="form-control">
                   {Object.keys(Unit).map((key, i) => (
                     <option key={key} value={key}>

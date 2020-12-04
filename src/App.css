@@ -10,7 +10,7 @@ body {
   padding: 15px;
 }
 
-.weather__container {
+.weather__container, .alert__container {
   padding-top: 20px;
   margin-top: 20px;
 }

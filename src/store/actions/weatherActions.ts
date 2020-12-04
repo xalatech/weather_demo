@@ -1,7 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '..';
 import weatherQuery from '../../service/query';
-import { WeatherAction, WeatherError, GET_WEATHER, SET_LOADING, SET_ERROR, WeatherDataResult, Unit } from '../types';
+import { WeatherAction, GET_WEATHER, SET_LOADING, SET_ERROR, WeatherDataResult, Unit } from '../types';
 
 export const getWeather = (city: string, unit: Unit): ThunkAction<void, RootState, null, WeatherAction> => {
   return async dispatch => {
@@ -13,14 +13,13 @@ export const getWeather = (city: string, unit: Unit): ThunkAction<void, RootStat
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({query: query})
-      })
+      }).then(response => response.json())
       
-      if(!res.ok) {
-        const resData: WeatherError = await res.json();
-        throw new Error(resData.message);
+      if(!res || !res.data.getCityByName) {
+        throw new Error("Invalid city name.");
       }
 
-      const resData: WeatherDataResult = await res.json();
+      const resData: WeatherDataResult = await res;
       resData.unit = unit;
 
       dispatch({
@@ -42,9 +41,9 @@ export const setLoading = (): WeatherAction => {
   }
 }
 
-export const setError = (): WeatherAction => {
+export const setError = (message: string): WeatherAction => {
   return {
     type: SET_ERROR,
-    payload: ''
+    payload: message
   }
 }
