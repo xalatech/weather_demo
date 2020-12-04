@@ -38,7 +38,8 @@ export interface WeatherData {
 export interface WeatherDataResult {
   data: {
     getCityByName: WeatherData
-  }
+  },
+  unit: Unit;
 }
 
 export enum Unit {

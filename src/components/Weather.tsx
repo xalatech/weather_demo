@@ -1,55 +1,46 @@
 import React, { FC } from 'react';
-import { WeatherData, WeatherDataResult } from '../store/types';
+import { Unit, WeatherData, WeatherDataResult } from '../store/types';
 import '../styles/weather.css';
+import moment from 'moment'
 
 interface WeatherProps {
-  data: WeatherDataResult;
+    data: WeatherDataResult;
+}
+
+const measurement = (unit: Unit) => {
+    if(unit === Unit.metric) {
+        return 'C';
+    }else if(unit === Unit.imperial) {
+        return 'F';
+    }else{
+        return 'K';
+    }
 }
 
 const Weather: FC<WeatherProps> = ({ data }) => {
-  const weatherData: WeatherData = data.data.getCityByName;
+    const weatherData: WeatherData = data.data.getCityByName;
+    const today = new Date;
 
-  return (
-    <section className="section">
-      <div className="card">
-
-        <h2>{weatherData.name}</h2>
-        <h3>Cloudy<span>Wind 10km/h <span className="dot">•</span> Precip 0%</span></h3>
-        <h1>23°</h1>
-        <div className="sky">
-          <div className="cold"></div>
-          <div className="cloud">
-            <div className="circle-small"></div>
-            <div className="circle-tall"></div>
-            <div className="circle-medium"></div>
-          </div>
+    return (
+        <div className="row container d-flex justify-content-center">
+            <div className="col-lg-12 grid-margin stretch-card">
+                <div className="card card__weather">
+                    <div className="card-body">
+                        <div className="weather__date__location">
+                            <h3>{weatherData.name}, {weatherData.country}</h3>
+                            <p className="text-gray"> <span className="weather-date">{moment(today).format("dddd")} {moment(today).format("DD MMM, yyyy")}</span> </p>
+                        </div>
+                        <div className="weather__data d-flex">
+                            <div className="mr-auto">
+                                <h4 className="display-3">{Math.round(weatherData.weather.temperature.actual)} <span className="symbol">°</span>{measurement(data.unit)} </h4>
+                                <p> Cloudy </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <table>
-          <tr>
-            <td>TUE</td>
-            <td>WED</td>
-            <td>THU</td>
-            <td>FRI</td>
-            <td>SAT</td>
-          </tr>
-          <tr>
-            <td>30°</td>
-            <td>34°</td>
-            <td>36°</td>
-            <td>34°</td>
-            <td>37°</td>
-          </tr>
-          <tr>
-            <td>17°</td>
-            <td>22°</td>
-            <td>19°</td>
-            <td>23°</td>
-            <td>19°</td>
-          </tr>
-        </table>
-      </div>
-    </section>
-  );
+    );
 }
 
 export default Weather;
