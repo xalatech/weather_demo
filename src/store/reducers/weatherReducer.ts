@@ -1,7 +1,7 @@
-import { WeatherState, WeatherAction, GET_WEATHER, SET_LOADING, SET_ERROR } from "../types";
+import { WeatherState, WeatherAction, GET_WEATHER, SET_LOADING, SET_ERROR, REMOVE_WEATHER } from "../types";
 
 const initialState: WeatherState = {
-  data: null,
+  data: [],
   loading: false,
   error: ''
 }
@@ -10,9 +10,15 @@ const WeatherReducer = (state = initialState, action: WeatherAction): WeatherSta
   switch(action.type) {
     case GET_WEATHER:
       return {
-        data: action.payload,
+        data: [action.payload, ...state.data],
         loading: false,
         error: ''
+      }
+    case REMOVE_WEATHER:
+      return {
+        ...state,
+        data: state.data.filter(weather => weather.data.getCityByName.name !== action.payload),
+        loading: false
       }
     case SET_LOADING:
       return {

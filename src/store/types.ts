@@ -1,4 +1,5 @@
 export const GET_WEATHER = 'GET_WEATHER';
+export const REMOVE_WEATHER = 'REMOVE_WEATHER';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_ERROR = 'SET_ERROR';
 
@@ -42,7 +43,7 @@ export enum Unit {
 }
 
 export interface WeatherState {
-  data: WeatherDataResult | null;
+  data: WeatherDataResult[];
   loading: boolean;
   error: string;
 }
@@ -50,6 +51,11 @@ export interface WeatherState {
 interface GetWeatherAction {
   type: typeof GET_WEATHER;
   payload: WeatherDataResult;
+}
+
+interface RemoveWeatherAction {
+  type: typeof REMOVE_WEATHER;
+  payload: string;
 }
 
 interface SetLoadingAction {
@@ -61,7 +67,7 @@ interface SetErrorAction {
   payload: string;
 }
 
-export type WeatherAction = GetWeatherAction | SetLoadingAction | SetErrorAction;
+export type WeatherAction = GetWeatherAction | RemoveWeatherAction | SetLoadingAction | SetErrorAction;
 
 export interface AlertState {
   message: string;

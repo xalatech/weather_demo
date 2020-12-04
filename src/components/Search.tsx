@@ -83,9 +83,7 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
                 </select>
               </div>
             </div>
-
-            <button type="submit" disabled={!city} className="btn btn-primary col-md-2 mt-2 mb-0">Search</button>
-            <button type="button" onClick={resetSearchForm} className="btn btn-secondary col-md-2 mt-2 ml-3 mb-0">Reset Form</button>
+            <button type="submit" disabled={!city} className="btn btn-primary col-md-5 mt-2 mb-0">Search</button>
           </form>
         </div>
       </div>
