@@ -26,13 +26,7 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
   }
 
   const changeUnitHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    e.preventDefault();
-    // set the unit field
-    setUnit(parseInt(e.target.value));
-
-    if(city) {
-      dispatchWeatherActions();
-    }
+    setUnit(parseInt(e.currentTarget.value));
   };
 
   const resetSearchForm = () => {
@@ -47,6 +41,7 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
     dispatch(setError(''))
     dispatch(setLoading());
     dispatch(getWeather(city, unit));
+    resetSearchForm();
   }
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -80,8 +75,8 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
               <div className="form-group col-md-4">
                 <label htmlFor="unit">Choose unit</label>
                 <select id="unit" onChange={changeUnitHandler} value={unit} className="form-control">
-                  {Object.keys(Unit).map((key, i) => (
-                    <option key={key} value={key}>
+                {Object.keys(Unit).filter(k => typeof Unit[k as any] === "number").map((key, i) => (
+                    <option key={i} value={i}>
                       {Unit[i]}
                     </option>
                   ))}
@@ -89,7 +84,7 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary col-md-2 mt-2 mb-0">Search</button>
+            <button type="submit" disabled={!city} className="btn btn-primary col-md-2 mt-2 mb-0">Search</button>
             <button type="button" onClick={resetSearchForm} className="btn btn-secondary col-md-2 mt-2 ml-3 mb-0">Reset Form</button>
           </form>
         </div>
