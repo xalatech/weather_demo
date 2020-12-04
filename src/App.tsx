@@ -19,13 +19,9 @@ const App: FC = () => {
   return (
     <main role="main" className="container">
       <Search title="Weather demo" subtitle="Enter city name & choose unit. Press search show weather info" />
-
-      <div className="weather__container card">
         {loading ? <h2 className="is-size-3 py-2">Loading...</h2> : weatherData && <Weather data={weatherData} />}
         {alertMsg && <Alert message={alertMsg} onClose={() => dispatch(setAlert(''))} />}
         {error && <Alert message={error} onClose={() => dispatch(setError())} />}
-      </div>
-  
     </main>
   );
 }
