@@ -6,11 +6,7 @@ interface AlertProps {
 
 const Alert: FC<AlertProps> = ({ message }) => {
   return(
-    <div className="alert__container card">
-      <div className="card-body">
-          <p className="alert alert-danger">{message}</p>
-      </div>
-    </div>
+      <p className="alert__container alert alert-danger">{message}</p>
   );
 }
 

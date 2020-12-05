@@ -1,8 +1,10 @@
 import { FC, useState, FormEvent, ChangeEvent, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Alert from './Alert';
 
 import { getWeather, setError, setLoading } from '../store/actions/weatherActions';
 import { Unit } from '../store/types';
+import { RootState } from '../store';
 
 interface SearchProps {
   title: string;
@@ -13,6 +15,7 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
   const dispatch = useDispatch();
   const [city, setCity] = useState('');
   const [unit, setUnit] = useState(Unit.metric);
+  const error = useSelector((state: RootState) => state.weather.error);
 
   // Make sure city input is always focussed
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -23,6 +26,10 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
 
   const changeCityHandler = (e: FormEvent<HTMLInputElement>) => {
     setCity(e.currentTarget.value);
+  }
+
+  const handleResetError = (e: FormEvent<HTMLInputElement>) => {
+    if(error) dispatch(setError(''))
   }
 
   const changeUnitHandler = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -70,6 +77,7 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
                   id="city"
                   placeholder="e.g. Paris, Oslo, London"
                   value={city}
+                  onKeyDown={handleResetError}
                   onChange={changeCityHandler} />
               </div>
               <div className="form-group col-md-4">
@@ -85,6 +93,7 @@ const Search: FC<SearchProps> = ({ title, subtitle }) => {
             </div>
             <button type="submit" disabled={!city} className="btn btn-primary col-md-5 mt-2 mb-0">Search</button>
           </form>
+          {error && <Alert message={error} />}
         </div>
       </div>
   );

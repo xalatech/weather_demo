@@ -17,7 +17,7 @@ const WeatherReducer = (state = initialState, action: WeatherAction): WeatherSta
     case REMOVE_WEATHER:
       return {
         ...state,
-        data: state.data.filter(weather => weather.data.getCityByName.name !== action.payload),
+        data: state.data.filter(weather => weather.data.getCityByName.name.toLowerCase() !== action.payload.toLocaleLowerCase()),
         loading: false
       }
     case SET_LOADING:

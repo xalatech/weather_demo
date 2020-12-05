@@ -5,8 +5,8 @@
     flex: 1 1 auto
 }
 
-.weather__container, .alert__container {
-    margin-top: 30px;
+.weather__container {
+    margin-top: 20px;
 }
 
 .weather__card__close__button {
